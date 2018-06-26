@@ -32,6 +32,7 @@ object Ex0Wordcount {
     val conf = new SparkConf()
                         .setAppName("Wordcount")
                         .setMaster("local[*]") // here local mode. And * means you will use as much as you have cores.
+                        .set("spark.hadoop.validateOutputSpecs", "false")
 
     val sc = new SparkContext(conf)
 
@@ -53,12 +54,21 @@ object Ex0Wordcount {
     // Hint: look at the mapToPair method
     // TODO write code here
 
+    //ok, i will
+    val loadedData:RDD[(String,Int)] = tweets.map(x => (x,1))
+
     // Step 2: reducer step
     // The philosophy: now you have a couple (key, value) where the key is a word, you want to aggregate the value for each word.
     // So you will use a reducer function.
     // Hint: the Spark API provides some reduce methods
     // TODO write code here
-    null
+
+    val reducedData = loadedData.reduceByKey((x,y) => x + y)
+    println("Data count: "+reducedData.count())
+    println("Data containing 'the': "+tweets.filter(x => x.matches("the")).count())
+    println("Data containing 'generally': "+tweets.filter(x => x.matches("generally")).count())
+
+    reducedData
 
   }
 
@@ -70,7 +80,11 @@ object Ex0Wordcount {
 
     // Hint: the Spark API provides a filter method
     // TODO write code here
-    null
+
+    val wcMoreThan4:RDD[(String,Int)] = tweets.filter( x => x._2.toInt > 4)
+    println("More than 4 Data count: "+wcMoreThan4.count())
+
+    wcMoreThan4
   }
 
 }
