@@ -1,9 +1,9 @@
 package com.duchessfr.spark.core
 
-import com.duchessfr.spark.utils.TweetUtils.Tweet
-import org.apache.spark.{SparkContext, SparkConf}
-
 import com.duchessfr.spark.utils.TweetUtils
+import com.duchessfr.spark.utils.TweetUtils.Tweet
+import org.apache.spark.rdd.RDD
+import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.collection.Map
 
@@ -39,7 +39,15 @@ object Ex4InvertedIndex {
     // Then group the tweets by hashtag
     // Finally return the inverted index as a map structure
     // TODO write code here
-    null
+    val extractedHashTags = tweets.map(x => x.text)
+      .flatMap(x => x.split(" "))
+      .filter(x => x.startsWith("#") && x.length>1)
+      .map(x => (x,1))
+      .reduceByKey((x, y) => x + y)
+      .map(x => x._1)
+    val hashTagWithTweets:RDD[(String, Iterable[Tweet])] = extractedHashTags.cartesian(tweets).filter(x => x._2.text.contains(x._1)).groupByKey(1)
+    //todo: still, cartesian is lengthy process
+    hashTagWithTweets.collectAsMap()
   }
 
 }
