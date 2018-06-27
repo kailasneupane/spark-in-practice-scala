@@ -52,7 +52,8 @@ object Ex3HashTagMining {
     // You want to return an RDD with the mentions
     // Hint: think about separating the word in the text field and then find the mentions
     // TODO write code here
-    null
+    val hashTags = tweets.map(x => x.text).flatMap(x => x.split(" ")).filter(x => x.startsWith("#") && x.length>1)
+    hashTags
     }
 
 
@@ -63,7 +64,8 @@ object Ex3HashTagMining {
      val tags= hashtagMentionedOnTweet
     // Hint: think about what you did in the wordcount example
     // TODO write code here
-    null
+    val hashTagsCount = tags.map(x => (x,1)).reduceByKey((x,y) => x + y)
+    hashTagsCount
   }
 
   /**
@@ -73,7 +75,8 @@ object Ex3HashTagMining {
     val countTags= countMentions
     // Hint: take a look at the sorting and take methods
     // TODO write code here
-    null
+    val top10HasTags = countTags.sortBy(x => x._2,false).take(10)
+    top10HasTags
   }
 
 }
