@@ -16,9 +16,9 @@ libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.
 
 libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
 
-libraryDependencies += "org.apache.spark" % "spark-streaming-twitter_2.10" % "1.5.2"
+libraryDependencies += "org.apache.spark" % "spark-streaming-twitter_2.11" % "1.6.2"
 
-libraryDependencies += "org.twitter4j" % "twitter4j-core" % "3.0.3"
+libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.6"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.2" % "test"
 
